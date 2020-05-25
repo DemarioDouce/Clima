@@ -16,6 +16,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var searchTbx: UITextField!
     
+    //Create object
+    var weatherManagerML = WeatherManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,7 +50,12 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     //Clear the text in the searchTbx
     func textFieldDidEndEditing(_ textField: UITextField) {
         //Use searchTbx.text to get the weather for the city
+        let city = searchTbx.text ?? ""
         
+        //pass the value to the method in weather manager model
+        weatherManagerML.getWeather(cityName: city)
+        
+        //Clear text
         searchTbx.text = ""
     }
     
