@@ -1,7 +1,7 @@
 import UIKit
 
 protocol WeatherManagerDelegate {
-   
+    
     func didUpdateweather(_ weatherManager: WeatherManager, weather: WeatherModel)
     func didFailWithError(error:Error)
 }
@@ -52,10 +52,10 @@ struct WeatherManager {
                 
                 
                 
-//                //Object of controller
-//                let weatherVC = WeatherViewController()
-//                
-//                weatherVC.didUpdateWeather(weather: weather!)
+                //                //Object of controller
+                //                let weatherVC = WeatherViewController()
+                //                
+                //                weatherVC.didUpdateWeather(weather: weather!)
                 
             }
         }
@@ -102,5 +102,5 @@ struct WeatherManager {
     //        }
     //    }
     
-
+    
 }

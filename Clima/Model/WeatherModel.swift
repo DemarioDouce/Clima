@@ -49,5 +49,5 @@ struct WeatherModel {
         }
     }
     
-
+    
 }
