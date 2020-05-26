@@ -33,8 +33,6 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
         //Dissmiss keyboard
         searchTbx.endEditing(true)
         
-        print(searchTbx.text!)
-        
     }
     
     //Func for if the go button is click.
@@ -47,7 +45,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    //Clear the text in the searchTbx
+    //Tells the delegate that editing stopped for the specified text field.
     func textFieldDidEndEditing(_ textField: UITextField) {
         //Use searchTbx.text to get the weather for the city
         let city = searchTbx.text ?? ""
