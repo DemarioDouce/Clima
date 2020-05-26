@@ -22,23 +22,63 @@ struct WeatherManager {
         let session = URLSession(configuration: .default)
         
         //3. Give the session a task
-        let task = session.dataTask(with: url!, completionHandler: handle(data:response:error:))
+        //let task = session.dataTask(with: url!, completionHandler: handle(data:response:error:))
+        
+        //using closer
+        let task = session.dataTask(with: url!) { (data, response, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            
+            if let safeData = data {
+                
+                self.parseJSON(weatherData: safeData)
+                
+            }
+        }
         
         //4. Start the task
         task.resume()
     }
     
-    func handle(data: Data?, response: URLResponse?, error: Error?) {
+    //Parse data JSON
+    func parseJSON(weatherData:Data)  {
         
-        if error != nil {
-            print(error!)
-            return
-        }
+        let decoder = JSONDecoder()
         
-        if let safeData = data {
+        do{
             
-            let dataString = String(data: safeData, encoding: .utf8)
-            print(dataString)
+            let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
+            let weatherID = decodedData.weather[0].id
+            let temp = decodedData.main.temp
+            let name = decodedData.name
+            
+            let weather = WeatherModel(weatherID: weatherID, cityName: name, temperature: temp)
+            
+            print(weather.temperatureString)
+            
+           
+            
+        } catch{
+            print(error)
         }
+        
     }
+    
+    //    func handle(data: Data?, response: URLResponse?, error: Error?) {
+    //
+    //        if error != nil {
+    //            print(error!)
+    //            return
+    //        }
+    //
+    //        if let safeData = data {
+    //
+    //            let dataString = String(data: safeData, encoding: .utf8)
+    //            print(dataString!)
+    //        }
+    //    }
+    
+
 }
