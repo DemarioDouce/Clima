@@ -8,7 +8,9 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController, UITextFieldDelegate {
+class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManagerDelegate {
+    
+    
     
     //UI Elements
     @IBOutlet weak var conditionImageView: UIImageView!
@@ -24,6 +26,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
         
         //Boss --> employee giving power to it
         searchTbx.delegate = self
+        weatherManagerML.delegate = self
         
     }
     
@@ -67,6 +70,22 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
             textField.placeholder = "Type something"
             return false
         }
+    }
+    
+    
+    func didUpdateweather(_ weatherManager: WeatherManager, weather: WeatherModel) {
+        
+        DispatchQueue.main.async {
+            
+            self.temperatureLabel.text = weather.temperatureString
+            self.conditionImageView.image = UIImage(systemName: weather.conditionName)
+        }
+        
+    }
+    
+    func didFailWithError(error: Error) {
+        
+        print(error)
     }
     
 }
