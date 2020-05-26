@@ -24,6 +24,16 @@ struct WeatherManager {
         
     }
     
+    //Get weather with latitude and longitude
+    func getWeather(latitude: Double, longitude: Double) {
+        
+        let urlString = "\(weatherURL)&lat=\(latitude)&lon=\(longitude)"
+        performRequest(with: urlString)
+        
+   
+    
+    }
+    
     //Networking
     func performRequest(with urlString: String)  {
         

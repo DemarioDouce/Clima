@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CoreLocation
 
 //MARK: - Main
 
@@ -20,17 +20,30 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var searchTbx: UITextField!
+    @IBOutlet weak var locationPressed: UIButton!
     
     //Create object
     var weatherManagerML = WeatherManager()
+    var locationManager =  CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Location object
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
+        
         
         //Boss --> employee giving power to it
         searchTbx.delegate = self
         weatherManagerML.delegate = self
         
+    }
+    
+    @IBAction func locaPressedBtn(_ sender: UIButton) {
+       
+        locationManager.requestLocation()
     }
 }
 
@@ -95,6 +108,7 @@ extension WeatherViewController: WeatherManagerDelegate{
             
             self.temperatureLabel.text = weather.temperatureString
             self.conditionImageView.image = UIImage(systemName: weather.conditionName)
+            self.cityLabel.text = weather.cityName
         }
         
     }
@@ -103,5 +117,33 @@ extension WeatherViewController: WeatherManagerDelegate{
         
         print(error)
     }
+    
+}
+
+
+//MARK: - CLLocationManagerDelegate
+
+extension WeatherViewController: CLLocationManagerDelegate{
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        if let location = locations.last{
+            locationManager.stopUpdatingLocation()
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            
+            weatherManagerML.getWeather(latitude: lat, longitude: lon)
+            
+           
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    
+        print(error)
+        
+    }
+    
+    
     
 }
